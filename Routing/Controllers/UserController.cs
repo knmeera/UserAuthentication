@@ -45,7 +45,7 @@ namespace Routing.Controllers
        
         public ActionResult Index()
         {
-            IEnumerable<User> userlist = _userRepository.GetAll();
+                IEnumerable<User> userlist = _userRepository.GetAll();
             return View(userlist);
         }
 
