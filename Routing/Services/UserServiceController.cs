@@ -8,12 +8,30 @@ using Routing.Models.Identity;
 using IdentityConsoleApplication.Identity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+ 
 namespace Routing.Services
 {
     public class UserServiceController : ApiController
     {
         static UserRepository _userRepository = new UserRepository();
+
+        [HttpPost]
+        public JToken Login([FromBody]JToken jsonbody)
+        {
+            string userName = (string)jsonbody.SelectToken("username");
+            string password = (string)jsonbody.SelectToken("password");
+ 
+            if (userName != null && password != null)
+            {
+                var json = _userRepository.Login(userName.Trim(), password.Trim());
+                return json;
+            }
+            else
+            {
+                return JObject.Parse("{Status :'false' , message:'Please enter valid details'}");
+            }
+        }
+
 
         // GET api/userservice
         public JToken Get()
@@ -29,10 +47,10 @@ namespace Routing.Services
             return "value";
         }
 
-        // POST api/userservice
-        public void Post([FromBody]string value)
-        {
-        }
+        //// POST api/userservice
+        //public void Post([FromBody]string value)
+        //{
+        //}
 
         // PUT api/userservice/5
         public void Put(int id, [FromBody]string value)
